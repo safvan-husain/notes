@@ -1,0 +1,9 @@
+node_modules/
+decrypted_notes/
+text_notes/
+dist/
+.vscode/
+.env
+
+.DS_Store
+Thumbs.db
