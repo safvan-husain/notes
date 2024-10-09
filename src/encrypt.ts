@@ -34,7 +34,7 @@ const encryptFile = async (filePath: string, outputDir: string, fileMapping: Rec
   fileMapping[newFileName] = fileName;
 };
 
-const encryptFolder = async (folderPath: string, outputDir: string, fileMapping: Record<string, string>) => {
+export const encryptFolder = async (folderPath: string, outputDir: string, fileMapping: Record<string, string>) => {
   await fs.mkdir(outputDir, { recursive: true });
 
   const files = await fs.readdir(folderPath);
@@ -55,7 +55,7 @@ const encryptFolder = async (folderPath: string, outputDir: string, fileMapping:
   }
 };
 
-const encryptMapping = async (mapping: Record<string, string>, outputDir: string) => {
+export const encryptMapping = async (mapping: Record<string, string>, outputDir: string) => {
   const mappingJson = JSON.stringify(mapping);
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(algorithm, key, iv);
@@ -64,17 +64,4 @@ const encryptMapping = async (mapping: Record<string, string>, outputDir: string
   console.log(`Mapping encrypted: ${path.join(outputDir, "mapping.enc")}`);
 };
 
-const folderToEncrypt = 'text_notes';
-const encryptedFolder = 'encrypted_notes';
 
-if (!folderToEncrypt) {
-  console.error("Error: Folder to encrypt is not defined");
-  process.exit(1);
-}
-
-const fileMapping = {};
-
-encryptFolder(folderToEncrypt, encryptedFolder, fileMapping)
-  .then(() => encryptMapping(fileMapping, encryptedFolder))
-  .then(() => console.log("Encryption complete"))
-  .catch((err) => console.error("Encryption failed:", err));
